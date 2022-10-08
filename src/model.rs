@@ -1,6 +1,4 @@
 use pulldown_cmark::{Parser, Options, html};
-// use serde::de;
-// use serde::Deserialize;
 use anyhow::Result;
 use std::path::{ Path, PathBuf };
 use std::io::{ Write, BufWriter };
@@ -8,7 +6,6 @@ use std::fs::{ create_dir_all, File, read_to_string };
 use walkdir::WalkDir;
 
 /// All articles recursively found
-// #[derive(Debug, Deserialize)]
 pub(crate) struct Articles(Vec<Article>);
 
 impl Articles {
@@ -55,11 +52,8 @@ pub fn create_file(path: &Path, read: bool, write: bool) -> std::io::Result<File
     file
 }
 
-// #[derive(Debug, Deserialize)]
 pub(crate) struct Article {
-    // #[serde(skip)] 
     pub path: PathBuf,
-    // #[serde(deserialize_with = "md_to_html")]
     pub html: String
 }
 
