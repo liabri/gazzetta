@@ -58,6 +58,7 @@ impl Article {
 
         let mut options = Options::empty();
         options.insert(Options::ENABLE_STRIKETHROUGH);
+        options.insert(Options::ENABLE_TABLES);
         let parser = Parser::new_ext(&markdown, options);
         let mut html = String::new();
         html::push_html(&mut html, parser);
