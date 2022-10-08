@@ -54,8 +54,7 @@ impl Article {
 
         //separate yaml & markdown
         let (yaml, markdown) = article.split_once("\n\n").context("cannot split yaml & markdown")?;
-        // let header = header.splitn(3, "\n").collect();
-        let (date, tags, lang): (NaiveDate, Vec<String>, String) = serde_yaml::from_str(yaml).unwrap();
+        let (date, tags, lang): (NaiveDate, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
 
         let mut options = Options::empty();
         options.insert(Options::ENABLE_STRIKETHROUGH);
@@ -78,6 +77,7 @@ pub fn create_file(path: &Path, read: bool, write: bool) -> std::io::Result<File
     let mut file = std::fs::OpenOptions::new()
         .read(read)
         .write(write)
+        .truncate(true)
         .open(path);
 
     if let Err(_) = file {
