@@ -4,15 +4,10 @@ use model::Articles;
 
 use anyhow::{Context, Result};
 use clap::Parser;
-use std::path::PathBuf;
 
 /// Commandline arguments.
 #[derive(Parser, Debug)]
 struct Cli {
-    /// If set, then don't write any files.
-    #[clap(long = "dry_run")]
-    dry_run: bool,
-
     /// The source directory.
     #[clap(long)]
     input: String,
@@ -22,20 +17,11 @@ struct Cli {
     output: String,
 }
 
-// impl Cli {
-//     fn output_config(&self) -> output::Config {
-//         output::Config {
-//             output_path: PathBuf::from(&self.output),
-//         }
-//     }
-// }
-
 fn run_on_args(args: impl Iterator<Item = std::ffi::OsString>) -> Result<()> {
     let args = Cli::parse_from(args);
-    let input_path = PathBuf::from(&args.input);
-    let blogs = Articles::get(&input_path).with_context(|| "Failed to read blogs directory")?;
-    // output::write_files(&gallery, &args.output_config()).with_context(|| "Failed to write gallery")
-    todo!()
+    let mut blogs = Articles::read(&args.input.as_ref())?;
+    blogs.write(&args.output.as_ref())?;
+    Ok(())
 }
 
 fn main() {
