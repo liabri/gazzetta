@@ -1,9 +1,12 @@
 use pulldown_cmark::{Parser, Options, html};
-use anyhow::Result;
+use anyhow::{ Context, Result };
 use std::path::{ Path, PathBuf };
 use std::io::{ Write, BufWriter };
 use std::fs::{ create_dir_all, File, read_to_string };
 use walkdir::WalkDir;
+use chrono::naive::NaiveDate;
+use handlebars::Handlebars;
+use serde::Serialize;
 
 /// All articles recursively found
 pub(crate) struct Articles(Vec<Article>);
@@ -20,15 +23,54 @@ impl Articles {
         Ok(Self(articles))
     }
 
-    pub fn write(&mut self, path: &Path) -> Result<()> {
+    pub fn write(&mut self, templates: &Handlebars, path: &Path) -> Result<()> {
         for article in &self.0 {
             let file = create_file(&path.join(&article.path.with_extension("html")), false, true)?;
             let mut writer = BufWriter::new(file);
-            writer.write(article.html.as_bytes())?;
+            
+            let html = templates.render("article", &article).with_context(|| "Failed to render gallery HTML page")?;
+            writer.write(html.as_bytes())?;
+            // writer.write(article.html.as_bytes())?;
             writer.flush()?;
         }
 
         Ok(())
+    }
+}
+
+#[derive(Serialize)]
+pub(crate) struct Article {
+    pub date: NaiveDate,
+    pub tags: Vec<String>,
+    pub lang: String,
+    pub path: PathBuf,
+    pub title: String,
+    pub html: String
+}
+
+impl Article {
+    pub fn read(input: &Path, path: &Path) -> Result<Self> {
+        let article = read_to_string(path)?;
+
+        //separate yaml & markdown
+        let (yaml, markdown) = article.split_once("\n\n").context("cannot split yaml & markdown")?;
+        // let header = header.splitn(3, "\n").collect();
+        let (date, tags, lang): (NaiveDate, Vec<String>, String) = serde_yaml::from_str(yaml).unwrap();
+
+        let mut options = Options::empty();
+        options.insert(Options::ENABLE_STRIKETHROUGH);
+        let parser = Parser::new_ext(&markdown, options);
+        let mut html = String::new();
+        html::push_html(&mut html, parser);
+
+        Ok(Self {
+            date,
+            tags,
+            lang,
+            title: path.file_name().unwrap().to_string_lossy().to_string(),
+            path: path.strip_prefix(input)?.to_path_buf(),
+            html
+        })
     }
 }
 
@@ -46,30 +88,9 @@ pub fn create_file(path: &Path, read: bool, write: bool) -> std::io::Result<File
             .read(read)
             .write(write)
             .create(true)
+            .truncate(true)
             .open(path);
     }
 
     file
-}
-
-pub(crate) struct Article {
-    pub path: PathBuf,
-    pub html: String
-}
-
-impl Article {
-    pub fn read(input: &Path, path: &Path) -> Result<Self> {
-        let markdown = read_to_string(path)?;
-
-        let mut options = Options::empty();
-        options.insert(Options::ENABLE_STRIKETHROUGH);
-        let parser = Parser::new_ext(&markdown, options);
-        let mut html = String::new();
-        html::push_html(&mut html, parser);
-
-        Ok(Self {
-            path: path.strip_prefix(input)?.to_path_buf(),
-            html
-        })
-    }
 }

@@ -1,4 +1,6 @@
-//! A static site generator for photo galleries.
+//! A static site generator for blogs.
+mod output;
+
 mod model;
 use model::Articles;
 
@@ -20,7 +22,7 @@ struct Cli {
 fn run_on_args(args: impl Iterator<Item = std::ffi::OsString>) -> Result<()> {
     let args = Cli::parse_from(args);
     let mut blogs = Articles::read(&args.input.as_ref())?;
-    blogs.write(&args.output.as_ref())?;
+    blogs.write(&output::templates()?, &args.output.as_ref())?;
     Ok(())
 }
 
