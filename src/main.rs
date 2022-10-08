@@ -1,6 +1,6 @@
 //! A static site generator for photo galleries.
-mod models;
-// mod input;
+mod model;
+use model::Articles;
 
 use anyhow::{Context, Result};
 use clap::Parser;
@@ -8,7 +8,6 @@ use std::path::PathBuf;
 
 /// Commandline arguments.
 #[derive(Parser, Debug)]
-#[clap(author, version, about, long_about = None)]
 struct Cli {
     /// If set, then don't write any files.
     #[clap(long = "dry_run")]
@@ -23,19 +22,20 @@ struct Cli {
     output: String,
 }
 
-impl Cli {
-    fn output_config(&self) -> output::Config {
-        output::Config {
-            output_path: PathBuf::from(&self.output),
-        }
-    }
-}
+// impl Cli {
+//     fn output_config(&self) -> output::Config {
+//         output::Config {
+//             output_path: PathBuf::from(&self.output),
+//         }
+//     }
+// }
 
 fn run_on_args(args: impl Iterator<Item = std::ffi::OsString>) -> Result<()> {
     let args = Cli::parse_from(args);
     let input_path = PathBuf::from(&args.input);
-    let blogs = input::gallery_from_dir(&input_path).with_context(|| "Failed to read blogs directory")?;
-    output::write_files(&gallery, &args.output_config()).with_context(|| "Failed to write gallery")
+    let blogs = Articles::get(&input_path).with_context(|| "Failed to read blogs directory")?;
+    // output::write_files(&gallery, &args.output_config()).with_context(|| "Failed to write gallery")
+    todo!()
 }
 
 fn main() {

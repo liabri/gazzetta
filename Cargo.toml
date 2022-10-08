@@ -6,9 +6,7 @@ description = "An opinionated static site generator for blogs"
 
 [dependencies]
 anyhow = "1.0.56"
-image = "0.24.3"
-chrono = "0.4.22"
-date-range = "0.2.2"
 serde = { version = "1.0.136", features = ["derive"] }
 pulldown-cmark = "0.9.2"
-clap = "4.0.10"
+clap = { version = "4.0.10", features = ["derive"] }
+proc-macro2 = "1.0.46"
