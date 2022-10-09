@@ -40,13 +40,18 @@ impl Articles {
 
 #[derive(Serialize)]
 pub(crate) struct Article {
-    pub date: NaiveDate,
+    pub title: String,
+    pub date: String,
     pub tags: Vec<String>,
     pub lang: String,
     pub path: PathBuf,
-    pub title: String,
     pub html: String
 }
+
+use icu::calendar::{Date, Gregorian};
+use icu::datetime::{options::length, TypedDateFormatter};
+use icu::locid::Locale;
+use std::str::FromStr;
 
 impl Article {
     pub fn read(input: &Path, path: &Path) -> Result<Self> {
@@ -54,7 +59,7 @@ impl Article {
 
         //separate yaml & markdown
         let (yaml, markdown) = article.split_once("\n\n").context("cannot split yaml & markdown")?;
-        let (date, tags, lang): (NaiveDate, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
+        let (title, date, tags, lang): (String, String, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
 
         let mut options = Options::empty();
         options.insert(Options::ENABLE_STRIKETHROUGH);
@@ -63,11 +68,25 @@ impl Article {
         let mut html = String::new();
         html::push_html(&mut html, parser);
 
+        // DATE
+        // let locale: Locale = lang.parse().unwrap();
+
+        let df = TypedDateFormatter::<Gregorian>::try_new_with_length_unstable(
+            &icu_testdata::unstable(),
+            &Locale::from_str(&lang).unwrap().into(),
+            // locale.into(),
+            length::Date::Long,
+        )
+        .expect("Failed to create TypedDateFormatter instance.");
+
+        let date = Date::try_new_gregorian_date(2020, 2, 1)
+            .expect("Failed to construct Date.");
+
         Ok(Self {
-            date,
+            title,
+            date: df.format(&date).to_string(),
             tags,
             lang,
-            title: path.file_name().unwrap().to_string_lossy().to_string(),
             path: path.strip_prefix(input)?.to_path_buf(),
             html
         })
