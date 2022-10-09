@@ -2,17 +2,12 @@ body {
 	max-width: 54em;
 }
 
-/*article:hover {
-	color: #982c61;
-	cursor: pointer;
-}*/
-
 .article {
 	display: flex;
 }
 
 .article:hover {
-  border-bottom: none;
+  	border-bottom: none;
 }
 
 .date {

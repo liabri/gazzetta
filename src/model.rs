@@ -97,7 +97,7 @@ impl Article {
             date: df.format(&date).to_string(),
             tags,
             lang,
-            path: path.strip_prefix(input)?.to_path_buf(),
+            path: path.strip_prefix(input)?.to_path_buf().with_extension("html"),
             html
         })
     }
