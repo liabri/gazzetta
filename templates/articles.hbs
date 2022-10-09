@@ -11,17 +11,17 @@
     <main>
         {{#each inner}}
           <article>
-              <div class="header">
-                <h3>{{title}}</h3>
-                <div class="tags">
-                  {{#each tags}}
-                    <a href="tags#{{this}}" class="tag">#{{this}}</a>
-                  {{/each}}
-                </div>
-                <p class="lang">{{lang}}</p>
-              </div>
-              <p class="desc">{{desc}}</p>
+            <div class="header">
               <p class="date">{{date}}</p>
+              <h3>{{title}}</h3>
+              <div class="tags">
+                {{#each tags}}
+                  <a href="tags#{{this}}" class="tag">#{{this}}</a>
+                {{/each}}
+              </div>
+              <p class="lang">{{lang}}</p>
+            </div>
+            <p class="desc">{{desc}}</p>
           </article>
         {{/each}}
     </main>

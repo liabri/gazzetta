@@ -1,7 +1,11 @@
-/*main {
-	display: flex;
-}*/
+body {
+	max-width: 54em;
+}
 
+.date {
+	white-space: nowrap;
+	margin-right: 1em;
+}
 
 .header {
   	display: flex;
@@ -18,5 +22,6 @@
 	margin-right: auto;
 }
 
-.lang {
+.desc {
+	margin-left: 9em;
 }
