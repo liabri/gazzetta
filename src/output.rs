@@ -6,6 +6,7 @@ use handlebars::Handlebars;
 pub fn templates<'a>() -> Result<Handlebars<'a>> {
     let mut handlebars = Handlebars::new();
     handlebars.set_strict_mode(true);
+    handlebars.register_template_string("articles", include_str!("../templates/articles.hbs"))?;
     handlebars.register_template_string("article", include_str!("../templates/article.hbs"))?;
     Ok(handlebars)
 }

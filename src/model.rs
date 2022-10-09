@@ -9,28 +9,39 @@ use handlebars::Handlebars;
 use serde::Serialize;
 
 /// All articles recursively found
-pub(crate) struct Articles(Vec<Article>);
+#[derive(Serialize)]
+pub(crate) struct Articles {
+    pub inner: Vec<Article>
+}
+
 
 impl Articles {
     pub fn read(path: &Path) -> Result<Self> {
-        let mut articles: Vec<Article> = Vec::new();
+        let mut inner: Vec<Article> = Vec::new();
 
         for entry in WalkDir::new(path).follow_links(true).into_iter().filter_map(|e| e.ok())
         .filter(|x| x.path().extension().unwrap_or_default().to_str()==Some("md")) {
-            articles.push(Article::read(&path, &entry.path())?);
+            inner.push(Article::read(&path, &entry.path())?);
         }
 
-        Ok(Self(articles))
+        Ok(Self{ inner })
     }
 
     pub fn write(&mut self, templates: &Handlebars, path: &Path) -> Result<()> {
-        for article in &self.0 {
+        let file = create_file(&path.join("articles").with_extension("html"), false, true)?;
+        let mut writer = BufWriter::new(file);
+        
+        let html = templates.render("articles", &self).with_context(|| "Failed to render articles HTML page")?;
+        writer.write(html.as_bytes())?;
+        writer.flush()?;
+
+
+        for article in &self.inner {
             let file = create_file(&path.join(&article.path.with_extension("html")), false, true)?;
             let mut writer = BufWriter::new(file);
             
-            let html = templates.render("article", &article).with_context(|| "Failed to render gallery HTML page")?;
+            let html = templates.render("article", &article).with_context(|| "Failed to render article HTML page")?;
             writer.write(html.as_bytes())?;
-            // writer.write(article.html.as_bytes())?;
             writer.flush()?;
         }
 
