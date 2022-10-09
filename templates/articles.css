@@ -2,6 +2,19 @@ body {
 	max-width: 54em;
 }
 
+/*article:hover {
+	color: #982c61;
+	cursor: pointer;
+}*/
+
+.article {
+	display: flex;
+}
+
+.article:hover {
+  border-bottom: none;
+}
+
 .date {
 	white-space: nowrap;
 	margin-right: 1em;
