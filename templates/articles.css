@@ -2,14 +2,21 @@
 	display: flex;
 }*/
 
-.article {
 
+.header {
+  	display: flex;
+  	gap: 10px;
 }
 
-.misc {
-    display: flex;
+.header * {
+    align-self: baseline;
 }
 
-.misc * {
-  	display: inline-block;
+.tags {
+	display: flex;
+	gap: 10px;
+	margin-right: auto;
+}
+
+.lang {
 }
