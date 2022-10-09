@@ -4,16 +4,25 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="index.css" rel="stylesheet">
+    <link href="articles.css" rel="stylesheet">
     <title>Articles</title>
   </head>
   <body>
     <main>
         {{#each inner}}
-          <li>
-              <div> 
-                <label>{{title}}</label>
+          <article class="article">
+              <h3 class="title">{{title}}</h3>
+              <p class="desc">{{desc}}</p>
+              <div class="misc">
+                <p class="date">{{date}}</p>
+                <p class="lang">{{lang}}</p>
+                <div class="tags">
+                  {{#each tags}}
+                    <a href="tags#{{this}}" class="tag">#{{this}}</a>
+                  {{/each}}
+                </div>
               </div>
-          </li>
+          </article>
         {{/each}}
     </main>
   </body>

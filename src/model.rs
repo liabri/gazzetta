@@ -52,6 +52,7 @@ impl Articles {
 #[derive(Serialize)]
 pub(crate) struct Article {
     pub title: String,
+    pub desc: String,
     pub date: String,
     pub tags: Vec<String>,
     pub lang: String,
@@ -79,22 +80,20 @@ impl Article {
         let mut html = String::new();
         html::push_html(&mut html, parser);
 
-        // DATE
-        // let locale: Locale = lang.parse().unwrap();
-
+        // Localised Date
         let df = TypedDateFormatter::<Gregorian>::try_new_with_length_unstable(
             &icu_testdata::unstable(),
             &Locale::from_str(&lang).unwrap().into(),
-            // locale.into(),
             length::Date::Long,
-        )
-        .expect("Failed to create TypedDateFormatter instance.");
+        ).expect("Failed to create TypedDateFormatter instance.");
 
-        let date = Date::try_new_gregorian_date(2020, 2, 1)
-            .expect("Failed to construct Date.");
+        let date = Date::try_new_gregorian_date(2020, 2, 1).expect("Failed to construct Date.");
+
+        let desc = String::from("This is a temporary description because I would like to test the decription function in the handlebars template before I implement it into every markdown article. OR potentially make the description a snippet from the article");
 
         Ok(Self {
             title,
+            desc,
             date: df.format(&date).to_string(),
             tags,
             lang,

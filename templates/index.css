@@ -249,3 +249,11 @@ img[alt$="><"] {
   margin: auto;
   float: none!important;
 }
+
+span {
+  float: left;
+  font-size: 54px;
+  margin-right: 5px;
+  margin-top: 15px;
+  line-height: 32px;
+}
