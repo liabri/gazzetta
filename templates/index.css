@@ -232,10 +232,14 @@ label, legend, fieldset {
 
 img[alt$=">"] {
   float: right;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 img[alt$="<"] {
   float: left;
+  margin-top: 10px;
+  margin-right: 10px;
 }
 
 img[alt$="><"] {
