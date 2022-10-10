@@ -16,6 +16,11 @@ SQUARE BULLET POINTS 		PICOCSS*/
     src: url(data/fonts/GentiumPlus-Regular.ttf) format("truetype");
 }
 
+@font-face {
+    font-family: Lettrine;
+    src: url(data/fonts/EileenCapsBlack.ttf) format("truetype");
+}
+
 
 html {
   font-size: 70%;
@@ -262,10 +267,12 @@ img[alt$="><"] {
   float: none!important;
 }
 
+/* lettrine */
 span {
   float: left;
-  font-size: 54px;
-  margin-right: 5px;
-  margin-top: 15px;
+  font-size: 6rem;
+  font-family: Lettrine; 
+  margin-right: 0px;
+  margin-top: 22px;
   line-height: 32px;
 }
