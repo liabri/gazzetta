@@ -1,14 +1,14 @@
 body {
-	max-width: 45em;
+	max-width: 50em;
 }
 
 a:hover {
-	border-bottom-style: none;
+	border-bottom: none;
 }
 
-.header {
+article {
 	display: grid;
-	grid-template-columns: 1fr 5fr;
+	grid-template-columns: 1fr 4fr;
   	column-gap: 10px;
 }
 
@@ -20,10 +20,14 @@ a:hover {
 .value {
 	text-align: left;
     align-self: baseline;
-	display: flex;
 }
 
-.value * {
+.value div {
+	display: flex;
+	gap: 10px;
+}
+
+.value div * {
 	align-self: baseline;
 }
 
@@ -31,12 +35,4 @@ a:hover {
 	display: flex;
 	gap: 10px;
 	margin-right: auto;
-}
-
-h3 {
-	margin-right: auto;
-}
-
-.desc {
-	margin-left: 8em;
 }

@@ -11,21 +11,19 @@
     <main>
         {{#each inner}}
           <article>
-            <a class="article" href="{{path}}">
-              <div class="header">
-                <span class="key">{{date}}</span>
-                <span class="value">
-                  <h3>{{title}}</h3>
-                <!--   <div class="tags">
+              <span class="key">{{date}}</span>
+              <div class="value">
+                <div>
+                  <a href="{{path}}"><h3>{{title}}</h3></a>
+                  <div class="tags">
                     {{#each tags}}
-                      <a href="tags#{{this}}" class="tag">#{{this}}</a>
+                    <a href="tags#{{this}}" class="tag">#{{this}}</a>
                     {{/each}}
-                  </div> -->
+                  </div>
                   <p class="lang">{{lang}}</p>
-                </span>
+                </div>
+                  <p class="desc">{{desc}}... <a class="read_more" href={{path}}>read more</a></p>
               </div>
-            </a>
-            <p class="desc">{{desc}}... <a class="read_more" href={{path}}>read more</a></p>
           </article>
         {{/each}}
     </main>
