@@ -272,7 +272,6 @@ img[alt$="><"] {
   float: left;
   font-size: 5.5rem;
   font-family: Lettrine; 
-  margin-top: 11px;
-  margin-right: -1px;
+  margin-top: 13px;
   line-height: 0.7;
 }

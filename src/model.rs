@@ -19,10 +19,15 @@ impl Articles {
     pub fn read(path: &Path) -> Result<Self> {
         let mut inner: Vec<Article> = Vec::new();
 
-        for entry in WalkDir::new(path).follow_links(true).into_iter().filter_map(|e| e.ok())
+        for entry in WalkDir::new(path).into_iter().filter_map(|e| e.ok())
         .filter(|x| x.path().extension().unwrap_or_default().to_str()==Some("md")) {
             inner.push(Article::read(&path, &entry.path())?);
         }
+
+        // sort by path for now (which is date for me), need to make by date explicitly
+        inner.sort_by(|p1, p2| {
+            p2.path.cmp(&p1.path)
+        });
 
         Ok(Self{ inner })
     }
@@ -30,7 +35,7 @@ impl Articles {
     pub fn write(&mut self, templates: &Handlebars, path: &Path) -> Result<()> {
         let file = create_file(&path.join("articles").with_extension("html"), false, true)?;
         let mut writer = BufWriter::new(file);
-        
+
         let html = templates.render("articles", &self).with_context(|| "Failed to render articles HTML page")?;
         writer.write(html.as_bytes())?;
         writer.flush()?;
@@ -60,7 +65,7 @@ pub(crate) struct Article {
     pub html: String
 }
 
-use icu::calendar::{Date, Gregorian};
+use icu::calendar::{Date, Gregorian, Iso};
 use icu::datetime::{options::length, TypedDateFormatter};
 use icu::locid::Locale;
 use std::str::FromStr;
@@ -81,7 +86,6 @@ impl Article {
             //REACHED EOF
             markdown.to_string()
         };
-
         desc.truncate(300);
         let mut desc = desc.trim().to_string();
         desc.push_str("...");
@@ -93,13 +97,17 @@ impl Article {
         let mut html = String::new();
         html::push_html(&mut html, parser);
 
-        // Localised Date
+        // Localised Date, disgusting -- will need to fix
+        let mut d = date.split("-");
+        let year = d.next().unwrap().parse::<i32>().unwrap();
+        let month = d.next().unwrap().parse::<u8>().unwrap();
+        let day = d.next().unwrap().parse::<u8>().unwrap();
         let df = TypedDateFormatter::<Gregorian>::try_new_with_length_unstable(
             &icu_testdata::unstable(),
             &Locale::from_str(&lang).unwrap().into(),
             length::Date::Long,
         ).expect("Failed to create TypedDateFormatter instance.");
-        let date = Date::try_new_gregorian_date(2020, 2, 1).expect("Failed to construct Date.");
+        let date = Date::try_new_gregorian_date(year, month, day).expect("Failed to construct Date.");
 
         Ok(Self {
             title,
