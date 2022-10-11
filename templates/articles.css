@@ -1,27 +1,30 @@
 body {
-	max-width: 54em;
+	max-width: 45em;
 }
 
-.article {
-	display: flex;
-}
-
-.article:hover {
-  	border-bottom: none;
-}
-
-.date {
-	white-space: nowrap;
-	margin-right: 1em;
+a:hover {
+	border-bottom-style: none;
 }
 
 .header {
-  	display: flex;
-  	gap: 10px;
+	display: grid;
+	grid-template-columns: 1fr 5fr;
+  	column-gap: 10px;
 }
 
-.header * {
+.key {
+	text-align: right;
     align-self: baseline;
+}
+
+.value {
+	text-align: left;
+    align-self: baseline;
+	display: flex;
+}
+
+.value * {
+	align-self: baseline;
 }
 
 .tags {
@@ -30,6 +33,10 @@ body {
 	margin-right: auto;
 }
 
+h3 {
+	margin-right: auto;
+}
+
 .desc {
-	margin-left: 9em;
+	margin-left: 8em;
 }

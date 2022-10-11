@@ -13,17 +13,19 @@
           <article>
             <a class="article" href="{{path}}">
               <div class="header">
-                <p class="date">{{date}}</p>
-                <h3>{{title}}</h3>
-                <div class="tags">
-                  {{#each tags}}
-                    <a href="tags#{{this}}" class="tag">#{{this}}</a>
-                  {{/each}}
-                </div>
-                <p class="lang">{{lang}}</p>
+                <span class="key">{{date}}</span>
+                <span class="value">
+                  <h3>{{title}}</h3>
+                <!--   <div class="tags">
+                    {{#each tags}}
+                      <a href="tags#{{this}}" class="tag">#{{this}}</a>
+                    {{/each}}
+                  </div> -->
+                  <p class="lang">{{lang}}</p>
+                </span>
               </div>
-              <p class="desc">{{desc}}... <a class="read_more" href={{path}}>read more</a></p>
             </a>
+            <p class="desc">{{desc}}... <a class="read_more" href={{path}}>read more</a></p>
           </article>
         {{/each}}
     </main>
