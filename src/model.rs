@@ -73,7 +73,9 @@ impl Article {
         let (yaml, markdown) = article.split_once("\n\n").context("cannot split yaml & markdown")?;
         let (title, date, tags, lang): (String, String, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
 
-        let desc = markdown.split_once("\n\n").context("cannot find description")?.0.to_string();
+        let mut desc = markdown.split_once("\n\n")
+            .context("cannot find description")?.0.to_string();
+        desc.truncate(100);
 
         let mut options = Options::empty();
         options.insert(Options::ENABLE_STRIKETHROUGH);
