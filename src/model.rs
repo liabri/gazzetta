@@ -73,6 +73,8 @@ impl Article {
         let (yaml, markdown) = article.split_once("\n\n").context("cannot split yaml & markdown")?;
         let (title, date, tags, lang): (String, String, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
 
+        let desc = markdown.split_once("\n\n").context("cannot find description")?.0.to_string();
+
         let mut options = Options::empty();
         options.insert(Options::ENABLE_STRIKETHROUGH);
         options.insert(Options::ENABLE_TABLES);
@@ -86,10 +88,7 @@ impl Article {
             &Locale::from_str(&lang).unwrap().into(),
             length::Date::Long,
         ).expect("Failed to create TypedDateFormatter instance.");
-
         let date = Date::try_new_gregorian_date(2020, 2, 1).expect("Failed to construct Date.");
-
-        let desc = String::from("This is a temporary description because I would like to test the decription function in the handlebars template before I implement it into every markdown article. OR potentially make the description a snippet from the article");
 
         Ok(Self {
             title,
