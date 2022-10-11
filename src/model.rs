@@ -40,7 +40,6 @@ impl Articles {
         writer.write(html.as_bytes())?;
         writer.flush()?;
 
-
         for article in &self.inner {
             let file = create_file(&path.join(&article.path.with_extension("html")), false, true)?;
             let mut writer = BufWriter::new(file);
@@ -73,23 +72,11 @@ use std::str::FromStr;
 impl Article {
     pub fn read(input: &Path, path: &Path) -> Result<Self> {
         let article = read_to_string(path)?;
-        let path = path.strip_prefix(input)?.to_path_buf().with_extension("html");
 
-        //separate yaml & markdown
+        // separatation of yaml & markdown
         let (yaml, markdown) = article.split_once("\n\n").context("cannot split yaml & markdown")?;
-        let (title, date, tags, lang): (String, String, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
 
-        // make nicer eventually
-        let mut desc = if let Some((desc, _)) = markdown.split_once("\n\n") {
-            desc.to_string()
-        } else {
-            //REACHED EOF
-            markdown.to_string()
-        };
-        desc.truncate(300);
-        let mut desc = desc.trim().to_string();
-        desc.push_str("...");
-
+        // parsing of markdown
         let mut options = Options::empty();
         options.insert(Options::ENABLE_STRIKETHROUGH);
         options.insert(Options::ENABLE_TABLES);
@@ -97,6 +84,12 @@ impl Article {
         let mut html = String::new();
         html::push_html(&mut html, parser);
 
+        // parsing of yaml
+        let (title, date, tags, lang): (String, String, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
+
+        // processing of yaml data
+        let locale = Locale::from_str(&lang).unwrap();
+        
         // Localised Date, disgusting -- will need to fix
         let mut d = date.split("-");
         let year = d.next().unwrap().parse::<i32>().unwrap();
@@ -104,10 +97,16 @@ impl Article {
         let day = d.next().unwrap().parse::<u8>().unwrap();
         let df = TypedDateFormatter::<Gregorian>::try_new_with_length_unstable(
             &icu_testdata::unstable(),
-            &Locale::from_str(&lang).unwrap().into(),
+            &locale.into(),
             length::Date::Long,
         ).expect("Failed to create TypedDateFormatter instance.");
         let date = Date::try_new_gregorian_date(year, month, day).expect("Failed to construct Date.");
+
+        // make nicer eventually, and figure out how to get purely the text and no markdown jazz, need to parse it for that?
+        let mut desc = if let Some((desc, _)) = markdown.split_once("\n\n") { desc.to_string() } else { markdown.to_string() /* reached eof */ };
+        desc.truncate(300);
+        let mut desc = desc.trim().to_string();
+        desc.push_str("...");
 
         Ok(Self {
             title,
@@ -115,7 +114,7 @@ impl Article {
             date: df.format(&date).to_string(),
             tags,
             lang,
-            path,
+            path: path.strip_prefix(input)?.to_path_buf().with_extension("html"),
             html
         })
     }
