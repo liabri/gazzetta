@@ -68,14 +68,32 @@ use std::str::FromStr;
 impl Article {
     pub fn read(input: &Path, path: &Path) -> Result<Self> {
         let article = read_to_string(path)?;
+        let path = path.strip_prefix(input)?.to_path_buf().with_extension("html");
 
         //separate yaml & markdown
         let (yaml, markdown) = article.split_once("\n\n").context("cannot split yaml & markdown")?;
         let (title, date, tags, lang): (String, String, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
 
-        let mut desc = markdown.split_once("\n\n")
-            .context("cannot find description")?.0.to_string();
-        desc.truncate(100);
+
+
+        let desc = if let Some((desc, _)) = markdown.split_once("\n\n") {
+            let mut desc = desc.to_string();
+            desc.truncate(100);
+            let mut desc = desc.trim().to_string();
+            desc.push_str("...");
+            desc
+        } else {
+            //REACHED EOF
+            let mut desc = markdown.to_string();
+            desc.truncate(100);
+            let mut desc = desc.trim().to_string();
+            desc.push_str("...");
+            desc
+        };
+
+        // let mut desc = markdown.split_once("\n\n")
+        //     .with_context(|| format!("cannot find description of article {:?}", path))?.0.to_string();
+        // desc.truncate(100);
 
         let mut options = Options::empty();
         options.insert(Options::ENABLE_STRIKETHROUGH);
@@ -98,7 +116,7 @@ impl Article {
             date: df.format(&date).to_string(),
             tags,
             lang,
-            path: path.strip_prefix(input)?.to_path_buf().with_extension("html"),
+            path,
             html
         })
     }
