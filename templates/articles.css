@@ -2,10 +2,6 @@ body {
 	max-width: 50em;
 }
 
-a:hover {
-	border-bottom: none;
-}
-
 article {
 	display: grid;
 	grid-template-columns: 1fr 4fr;
