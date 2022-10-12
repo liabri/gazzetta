@@ -11,9 +11,29 @@ SQUARE BULLET POINTS 		PICOCSS*/
  * Minimal css theme.
  * Project: https://github.com/oxalorg/sakura/
  */
+
 @font-face {
     font-family: GentiumPlus;
     src: url(data/fonts/GentiumPlus-Regular.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: GentiumPlus;
+    src: url(data/fonts/GentiumPlus-Bold.ttf) format("truetype");
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: GentiumPlus;
+    src: url(data/fonts/GentiumPlus-Italic.ttf) format("truetype");
+    font-style: italic;
+}
+
+@font-face {
+    font-family: GentiumPlus;
+    src: url(data/fonts/GentiumPlus-BoldItalic.ttf) format("truetype");
+    font-style: italic;
+    font-weight: bold;
 }
 
 @font-face {
@@ -21,6 +41,16 @@ SQUARE BULLET POINTS 		PICOCSS*/
     src: url(data/fonts/EileenCapsBlack.ttf) format("truetype");
 }
 
+@font-face {
+    font-family: SourceCodePro;
+    src: url(data/fonts/SourceCodePro-VariableFont.ttf) format("truetype");
+}
+
+@font-face {
+    font-family: SourceCodePro;
+    src: url(data/fonts/SourceCodePro-Italic-VariableFont.ttf) format("truetype");
+    font-style: italic;
+}
 
 html {
   font-size: 70%;
@@ -165,7 +195,7 @@ code, kbd, samp {
   padding: 0 0.5em;
   background-color: #f1f1f1;
   white-space: pre-wrap;
-  font-family: monospace;
+  font-family: SourceCodePro;
 }
 
 pre > code {
