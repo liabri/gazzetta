@@ -60,11 +60,11 @@ html {
 body {
   font-size: 1.8rem;
   line-height: 1.5;/*1.618;*/
-  max-width: 47em;
+  max-width: 60em;
   margin: auto;
-  color: #4a4a4a;
-  background-color: #f9f9f9;
-  padding: 13px;
+  color: #393939;
+  background-color: #f6f6f2;
+  padding: 13px 0 13px 0;
 }
 
 @media (max-width: 684px) {
@@ -135,7 +135,6 @@ a:visited {
 }
 a:hover {
   color: #982c61;
-  border-bottom: 2px solid #4a4a4a;
 }
 
 ul {

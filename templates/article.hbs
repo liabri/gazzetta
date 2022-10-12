@@ -9,10 +9,20 @@
   </head>
   <body>
     <main>
-      <div id="header">
-        <h1 id="title">{{title}}</h1>
+      <div class="header">
+        <div>
+          <h1 class="title">{{title}}</h1>
+          <div>
+            <span>{{date}}</span>
+            <span>·</span>
+            <div class="tags">
+              {{#each tags}}
+              <a href="tags#{{this}}" class="tag">#{{this}}</a>
+              {{/each}}
+            </div>
+          </div>
+        </div>
         <hr />
-        <p>{{date}}</p>
       </div>
       {{{html}}}
     </main>
