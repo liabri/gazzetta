@@ -14,41 +14,41 @@ SQUARE BULLET POINTS 		PICOCSS*/
 
 @font-face {
     font-family: GentiumPlus;
-    src: url(data/fonts/GentiumPlus-Regular.ttf) format("truetype");
+    src: url(../data/fonts/GentiumPlus-Regular.ttf) format("truetype");
 }
 
 @font-face {
     font-family: GentiumPlus;
-    src: url(data/fonts/GentiumPlus-Bold.ttf) format("truetype");
+    src: url(../data/fonts/GentiumPlus-Bold.ttf) format("truetype");
     font-weight: bold;
 }
 
 @font-face {
     font-family: GentiumPlus;
-    src: url(data/fonts/GentiumPlus-Italic.ttf) format("truetype");
+    src: url(../data/fonts/GentiumPlus-Italic.ttf) format("truetype");
     font-style: italic;
 }
 
 @font-face {
     font-family: GentiumPlus;
-    src: url(data/fonts/GentiumPlus-BoldItalic.ttf) format("truetype");
+    src: url(../data/fonts/GentiumPlus-BoldItalic.ttf) format("truetype");
     font-style: italic;
     font-weight: bold;
 }
 
 @font-face {
     font-family: Lettrine;
-    src: url(data/fonts/EileenCapsBlack.ttf) format("truetype");
+    src: url(../data/fonts/EileenCapsBlack.ttf) format("truetype");
 }
 
 @font-face {
     font-family: SourceCodePro;
-    src: url(data/fonts/SourceCodePro-VariableFont.ttf) format("truetype");
+    src: url(../data/fonts/SourceCodePro-VariableFont.ttf) format("truetype");
 }
 
 @font-face {
     font-family: SourceCodePro;
-    src: url(data/fonts/SourceCodePro-Italic-VariableFont.ttf) format("truetype");
+    src: url(../data/fonts/SourceCodePro-Italic-VariableFont.ttf) format("truetype");
     font-style: italic;
 }
 
