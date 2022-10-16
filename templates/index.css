@@ -297,6 +297,16 @@ img[alt$="><"] {
   float: none!important;
 }
 
+ruby {
+  text-indent: 0;
+  white-space: nowrap;
+  line-height: 0.7em;
+}
+
+ruby rt {
+  font-size: 0.6em;
+}
+
 .lettrine {
   float: left;
   font-size: 5.5rem;

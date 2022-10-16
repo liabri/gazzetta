@@ -6,12 +6,20 @@ use handlebars::Handlebars;
 pub fn templates<'a>() -> Result<Handlebars<'a>> {
     let mut handlebars = Handlebars::new();
     handlebars.set_strict_mode(true);
-    handlebars.register_template_string("articles", include_str!("../templates/articles.hbs"))?;
+    handlebars.register_template_string("index", include_str!("../templates/index.hbs"))?;
     handlebars.register_template_string("article", include_str!("../templates/article.hbs"))?;
     Ok(handlebars)
 }
 
-pub fn write_static(output: &Path) -> Result<()> {
+pub fn write_static(input: &Path, output: &Path) -> Result<()> {
+    for entry in walkdir::WalkDir::new(&input.join("data")).into_iter().filter_map(|e| e.ok()) {
+        if !entry.file_type().is_dir() {
+            let path = output.join(entry.path().strip_prefix(input)?.to_path_buf());
+            create_dir_all(path.parent().with_context(|| format!("Could not determine parent directory of {:?}", entry.path()))?)?;
+            std::fs::copy(entry.path(), path).unwrap();
+        }
+    }
+
     for (path, content) in [
         (output.join("index.css"), include_str!("../templates/index.css")),
         (output.join("articles.css"), include_str!("../templates/articles.css")),

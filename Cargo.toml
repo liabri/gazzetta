@@ -6,7 +6,7 @@ description = "An opinionated static site generator for blogs"
 
 [dependencies]
 anyhow = "1.0.56"
-pulldown-cmark = { path = "../../pulldown-cmark" }
+pulldown-cmark = { git = "https://github.com/liabri/pulldown-cmark" }
 zmerald = { git = "https://github.com/liabri/zmerald" }
 serde = { version = "1.0.145", features = ["derive"] }
 clap = { version = "4.0.10", features = ["derive"] }

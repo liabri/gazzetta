@@ -33,10 +33,10 @@ impl Articles {
     }
 
     pub fn write(&mut self, templates: &Handlebars, path: &Path) -> Result<()> {
-        let file = create_file(&path.join("articles").with_extension("html"), false, true)?;
+        let file = create_file(&path.join("index").with_extension("html"), false, true)?;
         let mut writer = BufWriter::new(file);
 
-        let html = templates.render("articles", &self).with_context(|| "Failed to render articles HTML page")?;
+        let html = templates.render("index", &self).with_context(|| "Failed to render index HTML page")?;
         writer.write(html.as_bytes())?;
         writer.flush()?;
 
