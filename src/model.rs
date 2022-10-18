@@ -68,6 +68,18 @@ use icu::calendar::{Date, Gregorian, Iso};
 use icu::datetime::{options::length, TypedDateFormatter};
 use icu::locid::Locale;
 use std::str::FromStr;
+use html_editor::operation::{ Selector, Queryable };
+use html_editor::{ Element, Node, parse };
+
+pub fn extract_all_text(output: &mut String, el: Element) {
+    for child in el.children {
+        match child {
+            Node::Text(s) => output.push_str(&s),
+            Node::Element{name, attrs, children} => extract_all_text(output, Element{name, attrs, children}),
+            _ => ()
+        }
+    }
+}
 
 impl Article {
     pub fn read(input: &Path, path: &Path) -> Result<Self> {
@@ -83,6 +95,21 @@ impl Article {
         let parser = Parser::new_ext(&markdown, options);
         let mut html = String::new();
         html::push_html(&mut html, parser);
+
+        // html = String::from_utf8_lossy(&minify_html_onepass::copy(html.as_bytes(), &minify_html_onepass::Cfg::new()).unwrap()).to_string();
+
+        let doc: Vec<Node> = parse(&html).unwrap();
+        
+        // add <section> around every header
+
+        // add #id to each <section> for document traversing 
+
+        // description
+        let mut desc = String::new();
+        extract_all_text(&mut desc, doc.query(&Selector::from("p")).unwrap());
+        desc.truncate(300);
+        let mut desc = desc.trim().to_string();
+        desc.push_str("...");
 
         // parsing of yaml
         let (title, date, tags, lang): (String, String, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
@@ -101,12 +128,6 @@ impl Article {
             length::Date::Long,
         ).expect("Failed to create TypedDateFormatter instance.");
         let date = Date::try_new_gregorian_date(year, month, day).expect("Failed to construct Date.");
-
-        // make nicer eventually, and figure out how to get purely the text and no markdown jazz, need to parse it for that?
-        let mut desc = if let Some((desc, _)) = markdown.split_once("\n\n") { desc.to_string() } else { markdown.to_string() /* reached eof */ };
-        desc.truncate(300);
-        let mut desc = desc.trim().to_string();
-        desc.push_str("...");
 
         Ok(Self {
             title,

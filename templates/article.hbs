@@ -8,10 +8,20 @@
     <title>{{title}}</title>
   </head>
   <body>
+    <div class="sidebar">
+      <a id="back" href="index.html">☚ back</a>
+      <nav class="toc">
+        <ul>
+          <li>
+            <a href="#t">{{title}}</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
     <main>
       <div class="header">
         <div>
-          <h1 class="title">{{title}}</h1>
+          <h1 id="t" class="title">{{title}}</h1>
           <div>
             <span>{{date}}</span>
             <span>·</span>
@@ -22,8 +32,8 @@
             </div>
           </div>
         </div>
-        <hr />
       </div>
+      <hr />
       {{{html}}}
     </main>
 
