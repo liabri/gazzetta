@@ -33,11 +33,6 @@ impl Articles {
             inner.push(article);
         }
 
-        // sort by path for now (which is date for me), need to make by date explicitly
-        // inner.sort_by(|p1, p2| {
-        //     p2.path.cmp(&p1.path)
-        // });
-
         Ok(Self{ tags, inner })
     }
 

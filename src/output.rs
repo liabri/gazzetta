@@ -9,6 +9,7 @@ pub fn templates<'a>() -> Result<Handlebars<'a>> {
     handlebars.register_template_string("index", include_str!("../templates/index.hbs"))?;
     handlebars.register_template_string("article", include_str!("../templates/article.hbs"))?;
     handlebars.register_template_string("tag", include_str!("../templates/tag.hbs"))?;
+    handlebars.register_partial("index", include_str!("../templates/index.hbs"))?;
     Ok(handlebars)
 }
 
