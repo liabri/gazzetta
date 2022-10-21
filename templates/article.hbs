@@ -12,9 +12,11 @@
       <a id="back" href="index.html">☚ back</a>
       <nav class="toc">
         <ul>
-          <li>
-            <a href="#t">{{title}}</a>
-          </li>
+          {{#each secs}}
+            <li>
+              <a href="#{{this}}">{{this}}</a>
+            </li>
+          {{/each}}
         </ul>
       </nav>
     </div>
@@ -27,7 +29,7 @@
             <span>·</span>
             <div class="tags">
               {{#each tags}}
-              <a href="tags#{{this}}" class="tag">#{{this}}</a>
+                <a href="tags#{{this}}" class="tag">#{{this}}</a>
               {{/each}}
             </div>
           </div>

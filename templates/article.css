@@ -4,7 +4,7 @@
 
 
 body {
-	/*padding: 3em 20vw 3em 20vw;*/
+	padding: 3em 20vw 3em 16vw;
 	display: flex;
 	gap: 40px;
 }
@@ -19,7 +19,7 @@ body {
 .sidebar {
 	display: flex;
 	flex-direction: column;
-	background-color: red;
+	/*background-color: red;*/
 	gap: 100px;
 }
 

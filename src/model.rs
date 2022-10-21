@@ -7,10 +7,12 @@ use walkdir::WalkDir;
 use chrono::naive::NaiveDate;
 use handlebars::Handlebars;
 use serde::Serialize;
+use std::collections::HashSet;
 
 /// All articles recursively found
 #[derive(Serialize)]
 pub(crate) struct Articles {
+    pub tags: HashSet<String>,
     pub inner: Vec<Article>
 }
 
@@ -18,10 +20,13 @@ pub(crate) struct Articles {
 impl Articles {
     pub fn read(path: &Path) -> Result<Self> {
         let mut inner: Vec<Article> = Vec::new();
+        let mut tags = HashSet::new();
 
         for entry in WalkDir::new(path).into_iter().filter_map(|e| e.ok())
         .filter(|x| x.path().extension().unwrap_or_default().to_str()==Some("md")) {
-            inner.push(Article::read(&path, &entry.path())?);
+            let article = Article::read(&path, &entry.path())?; 
+            tags.extend(article.tags.clone());
+            inner.push(article);
         }
 
         // sort by path for now (which is date for me), need to make by date explicitly
@@ -29,10 +34,11 @@ impl Articles {
             p2.path.cmp(&p1.path)
         });
 
-        Ok(Self{ inner })
+        Ok(Self{ tags, inner })
     }
 
     pub fn write(&mut self, templates: &Handlebars, path: &Path) -> Result<()> {
+        // index
         let file = create_file(&path.join("index").with_extension("html"), false, true)?;
         let mut writer = BufWriter::new(file);
 
@@ -40,11 +46,22 @@ impl Articles {
         writer.write(html.as_bytes())?;
         writer.flush()?;
 
+        // tags
+        for tag in &self.tags {
+            let file = create_file(&path.join("t").join(tag).with_extension("html"), false, true)?;
+            let mut writer = BufWriter::new(file);
+            
+            let html = templates.render("tag", &tag).with_context(|| format!("Failed to render tag '{}' HTML page", &tag))?;
+            writer.write(html.as_bytes())?;
+            writer.flush()?;
+        }
+
+        // articles
         for article in &self.inner {
             let file = create_file(&path.join(&article.path.with_extension("html")), false, true)?;
             let mut writer = BufWriter::new(file);
             
-            let html = templates.render("article", &article).with_context(|| "Failed to render article HTML page")?;
+            let html = templates.render("article", &article).with_context(|| format!("Failed to render article '{:?}' HTML page", &article.path))?;
             writer.write(html.as_bytes())?;
             writer.flush()?;
         }
@@ -61,16 +78,19 @@ pub(crate) struct Article {
     pub tags: Vec<String>,
     pub lang: String,
     pub path: PathBuf,
-    pub html: String
+    pub html: String,
+    pub secs: Vec<String>
 }
 
 use icu::calendar::{Date, Gregorian, Iso};
 use icu::datetime::{options::length, TypedDateFormatter};
 use icu::locid::Locale;
 use std::str::FromStr;
-use html_editor::operation::{ Selector, Queryable };
+use html_editor::operation::{ Htmlifiable, Editable, Selector, Queryable };
 use html_editor::{ Element, Node, parse };
 
+
+/// Extracts all plain text from all Text nodes of an Element.
 pub fn extract_all_text(output: &mut String, el: Element) {
     for child in el.children {
         match child {
@@ -97,19 +117,7 @@ impl Article {
         html::push_html(&mut html, parser);
 
         // html = String::from_utf8_lossy(&minify_html_onepass::copy(html.as_bytes(), &minify_html_onepass::Cfg::new()).unwrap()).to_string();
-
-        let doc: Vec<Node> = parse(&html).unwrap();
-        
-        // add <section> around every header
-
-        // add #id to each <section> for document traversing 
-
-        // description
-        let mut desc = String::new();
-        extract_all_text(&mut desc, doc.query(&Selector::from("p")).unwrap());
-        desc.truncate(300);
-        let mut desc = desc.trim().to_string();
-        desc.push_str("...");
+        // https://crates.io/crates/scraper
 
         // parsing of yaml
         let (title, date, tags, lang): (String, String, Vec<String>, String) = zmerald::from_str(yaml).unwrap();
@@ -129,6 +137,39 @@ impl Article {
         ).expect("Failed to create TypedDateFormatter instance.");
         let date = Date::try_new_gregorian_date(year, month, day).expect("Failed to construct Date.");
 
+
+        let mut doc: Vec<Node> = parse(&html).unwrap();
+
+        // description
+        let mut desc = String::new();
+        extract_all_text(&mut desc, doc.query(&Selector::from("p")).unwrap());
+        desc.truncate(300);
+        let mut desc = desc.trim().to_string();
+        desc.push_str("...");
+
+        // add <section> around every header
+        let mut secs: Vec<String> = Vec::new();
+
+        //this does not respect the order in which they are. prioritises h1 above h2 etc.
+        let mut headers = Vec::new();
+        headers.append(&mut doc.query_all(&Selector::from("h1")));
+        headers.append(&mut doc.query_all(&Selector::from("h2")));
+        headers.append(&mut doc.query_all(&Selector::from("h3")));
+        headers.append(&mut doc.query_all(&Selector::from("h4")));
+        headers.append(&mut doc.query_all(&Selector::from("h5")));
+        headers.append(&mut doc.query_all(&Selector::from("h6")));
+
+        for header in headers  {
+            // println!("header: {:?}", header);
+            if let Some(Node::Text(v)) = header.children.first() {
+                // println!(" V: {}", v);
+                secs.push(v.to_owned());
+                let sec = Node::new_element("section", vec![("id", &v)], vec![header.children.first().unwrap().to_owned()]);
+                // html = doc.remove_by(&Selector::from("h2"))
+                // .insert_to(&Selector::from("main"), sec).html();
+            }
+        }
+
         Ok(Self {
             title,
             desc,
@@ -136,7 +177,8 @@ impl Article {
             tags,
             lang,
             path: path.strip_prefix(input)?.to_path_buf().with_extension("html"),
-            html
+            html,
+            secs
         })
     }
 }
