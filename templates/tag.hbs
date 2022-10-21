@@ -4,14 +4,17 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link href="../index.css" rel="stylesheet">
-    <title>#{{this}}</title>
+    <title>#{{this.0}}</title>
   </head>
   <body>
     <div class="sidebar">
-      <a id="back" href="index.html">☚ back</a>
+      <a id="back" href="../index.html">☚ back</a>
     </div>
     <main>
-      <h1>#{{this}}</h1>
+      <h1>#{{this.0}}</h1>
+      {{#each this.1}}
+        <h2>{{title}}</h2>
+      {{/each}}
     </main>
   </body>
 </html>

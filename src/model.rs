@@ -7,12 +7,13 @@ use walkdir::WalkDir;
 use chrono::naive::NaiveDate;
 use handlebars::Handlebars;
 use serde::Serialize;
-use std::collections::HashSet;
+use std::collections::{ HashSet, HashMap };
 
 /// All articles recursively found
 #[derive(Serialize)]
 pub(crate) struct Articles {
-    pub tags: HashSet<String>,
+    /// Tag name, pointers to inner
+    pub tags: HashMap<String, HashSet<usize>>,
     pub inner: Vec<Article>
 }
 
@@ -20,12 +21,15 @@ pub(crate) struct Articles {
 impl Articles {
     pub fn read(path: &Path) -> Result<Self> {
         let mut inner: Vec<Article> = Vec::new();
-        let mut tags = HashSet::new();
+        let mut tags: HashMap<String, HashSet<usize>> = HashMap::new();
 
         for entry in WalkDir::new(path).into_iter().filter_map(|e| e.ok())
         .filter(|x| x.path().extension().unwrap_or_default().to_str()==Some("md")) {
-            let article = Article::read(&path, &entry.path())?; 
-            tags.extend(article.tags.clone());
+            let article = Article::read(&path, &entry.path())?;
+            for tag in article.tags.clone() {
+                let entry = tags.entry(tag);
+                entry.or_default().insert(inner.len());
+            }
             inner.push(article);
         }
 
@@ -48,10 +52,14 @@ impl Articles {
 
         // tags
         for tag in &self.tags {
-            let file = create_file(&path.join("t").join(tag).with_extension("html"), false, true)?;
+            let file = create_file(&path.join("t").join(tag.0).with_extension("html"), false, true)?;
             let mut writer = BufWriter::new(file);
-            
-            let html = templates.render("tag", &tag).with_context(|| format!("Failed to render tag '{}' HTML page", &tag))?;
+            let mut articles = tag.1.iter().map(|i| self.inner[*i].clone()).collect::<Vec<_>>();
+            articles.sort_by(|p1, p2| {
+                p2.path.cmp(&p1.path)
+            });
+
+            let html = templates.render("tag", &(&tag.0, &articles)).with_context(|| format!("Failed to render tag '{}' HTML page", &tag.0))?;
             writer.write(html.as_bytes())?;
             writer.flush()?;
         }
@@ -70,7 +78,7 @@ impl Articles {
     }
 }
 
-#[derive(Serialize)]
+#[derive(Serialize, Clone)]
 pub(crate) struct Article {
     pub title: String,
     pub desc: String,
