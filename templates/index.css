@@ -307,6 +307,14 @@ ruby rt {
   font-size: 0.6em;
 }
 
+.logo {
+  width: 40px;
+  position: absolute;
+  height: 40px;
+  top: 20px;
+  left: 20px;
+}
+
 .lettrine {
   float: left;
   font-size: 5.5rem;
