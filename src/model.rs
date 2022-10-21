@@ -34,22 +34,14 @@ impl Articles {
         }
 
         // sort by path for now (which is date for me), need to make by date explicitly
-        inner.sort_by(|p1, p2| {
-            p2.path.cmp(&p1.path)
-        });
+        // inner.sort_by(|p1, p2| {
+        //     p2.path.cmp(&p1.path)
+        // });
 
         Ok(Self{ tags, inner })
     }
 
     pub fn write(&mut self, templates: &Handlebars, path: &Path) -> Result<()> {
-        // index
-        let file = create_file(&path.join("index").with_extension("html"), false, true)?;
-        let mut writer = BufWriter::new(file);
-
-        let html = templates.render("index", &self).with_context(|| "Failed to render index HTML page")?;
-        writer.write(html.as_bytes())?;
-        writer.flush()?;
-
         // tags
         for tag in &self.tags {
             let file = create_file(&path.join("t").join(tag.0).with_extension("html"), false, true)?;
@@ -63,6 +55,18 @@ impl Articles {
             writer.write(html.as_bytes())?;
             writer.flush()?;
         }
+
+        self.inner.sort_by(|p1, p2| {
+                p2.path.cmp(&p1.path)
+        });
+
+        // index
+        let file = create_file(&path.join("index").with_extension("html"), false, true)?;
+        let mut writer = BufWriter::new(file);
+
+        let html = templates.render("index", &self).with_context(|| "Failed to render index HTML page")?;
+        writer.write(html.as_bytes())?;
+        writer.flush()?;
 
         // articles
         for article in &self.inner {
