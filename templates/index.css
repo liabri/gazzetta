@@ -1,325 +1,35 @@
-/*marx
-sakura 
-water
-no-class
-
-BLOCK QUOTES 		 		MARKDOWN-SPLENDOR
-SQUARE BULLET POINTS 		PICOCSS*/
-
-/* Sakura.css v1.4.1
- * ================
- * Minimal css theme.
- * Project: https://github.com/oxalorg/sakura/
- */
-
-@font-face {
-    font-family: GentiumPlus;
-    src: url(../data/fonts/GentiumPlus-Regular.ttf) format("truetype");
+main {
+  	padding: 13px 0 13px 0;
+	max-width: 50em;
 }
 
-@font-face {
-    font-family: GentiumPlus;
-    src: url(../data/fonts/GentiumPlus-Bold.ttf) format("truetype");
-    font-weight: bold;
+article {
+	display: grid;
+	grid-template-columns: 1fr 4fr;
+  	column-gap: 10px;
 }
 
-@font-face {
-    font-family: GentiumPlus;
-    src: url(../data/fonts/GentiumPlus-Italic.ttf) format("truetype");
-    font-style: italic;
+.key {
+	text-align: right;
+    align-self: baseline;
 }
 
-@font-face {
-    font-family: GentiumPlus;
-    src: url(../data/fonts/GentiumPlus-BoldItalic.ttf) format("truetype");
-    font-style: italic;
-    font-weight: bold;
+.value {
+	text-align: left;
+    align-self: baseline;
 }
 
-@font-face {
-    font-family: Lettrine;
-    src: url(../data/fonts/EileenCapsBlack.ttf) format("truetype");
+.value div {
+	display: flex;
+	gap: 10px;
 }
 
-@font-face {
-    font-family: SourceCodePro;
-    src: url(../data/fonts/SourceCodePro-VariableFont.ttf) format("truetype");
+.value div * {
+	align-self: baseline;
 }
 
-@font-face {
-    font-family: SourceCodePro;
-    src: url(../data/fonts/SourceCodePro-Italic-VariableFont.ttf) format("truetype");
-    font-style: italic;
-}
-
-html {
-  font-size: 70%;
-  font-family: GentiumPlus;
-}
-
-body {
-  font-size: 1.8rem;
-  line-height: 1.5;/*1.618;*/
-  /*max-width: 60em;*/
-  margin: auto;
-  color: #393939;
-  background-color: #f6f6f2;
-  padding: 13px 0 13px 0;
-}
-
-@media (max-width: 684px) {
-  body {
-    font-size: 1.53rem;
-  }
-}
-@media (max-width: 382px) {
-  body {
-    font-size: 1.35rem;
-  }
-}
-
-h1, h2, h3, h4, h5, h6 {
-  line-height: 1.1;
-  font-weight: 700;
-  margin-top: 3rem;
-  margin-bottom: 1.5rem;
-  overflow-wrap: break-word;
-  word-wrap: break-word;
-  -ms-word-break: break-all;
-  word-break: break-word;
-}
-
-h1 {
-  font-size: 2.35em;
-}
-
-h2 {
-  font-size: 2em;
-}
-
-h3 {
-  font-size: 1.75em;
-}
-
-h4 {
-  font-size: 1.5em;
-}
-
-h5 {
-  font-size: 1.25em;
-}
-
-h6 {
-  font-size: 1em;
-}
-
-p {
-  margin-top: 0px;
-  margin-bottom: 1.2rem;
-}
-
-small, sub, sup {
-  font-size: 75%;
-}
-
-hr {
-  border-color: #1d7484;
-}
-
-a {
-  text-decoration: none;
-  color: #1d7484;
-}
-a:visited {
-  color: #144f5a;
-}
-a:hover {
-  color: #982c61;
-}
-
-ul {
-  padding-left: 2em;
-  margin-top: 0px;
-  margin-bottom: 1.2rem;
-  list-style-type: "– ";
-}
-
-ol {
-  padding-left: 2em;
-  margin-top: 0px;
-  margin-bottom: 1.2rem;
-  list-style-type: lower-latin;
-}
-
-li {
-  margin-bottom: 0.2em;
-}
-
-blockquote {
-  margin-left: 0px;
-  margin-right: 0px;
-  padding-left: 1em;
-  padding-top: 0.8em;
-  padding-bottom: 0.8em;
-  padding-right: 0.8em;
-  border-left: 5px solid #1d7484;
-  margin-bottom: 2.5rem;
-  background-color: #f1f1f1;
-}
-
-blockquote p {
-  margin-bottom: 0;
-}
-
-img, video {
-  height: auto;
-  max-width: 100%;
-  margin-top: 0px;
-  margin-bottom: 2.5rem;
-}
-
-/* Pre and Code */
-pre {
-  background-color: #f1f1f1;
-  display: block;
-  padding: 1em;
-  overflow-x: auto;
-  margin-top: 0px;
-  margin-bottom: 2.5rem;
-  font-size: 0.9em;
-}
-
-code, kbd, samp {
-  font-size: 0.9em;
-  padding: 0 0.5em;
-  background-color: #f1f1f1;
-  white-space: pre-wrap;
-  font-family: SourceCodePro;
-}
-
-pre > code {
-  padding: 0;
-  background-color: transparent;
-  white-space: pre;
-  font-size: 1em;
-}
-
-/* Tables */
-table {
-  text-align: justify;
-  width: 100%;
-  border-collapse: collapse;
-}
-
-td, th {
-  padding: 0.5em;
-  border-bottom: 1px solid #f1f1f1;
-}
-
-/* Buttons, forms and input */
-input, textarea {
-  border: 1px solid #4a4a4a;
-}
-input:focus, textarea:focus {
-  border: 1px solid #1d7484;
-}
-
-textarea {
-  width: 100%;
-}
-
-.button, button, input[type=submit], input[type=reset], input[type=button] {
-  display: inline-block;
-  padding: 5px 10px;
-  text-align: center;
-  text-decoration: none;
-  white-space: nowrap;
-  background-color: #1d7484;
-  color: #f9f9f9;
-  border-radius: 1px;
-  border: 1px solid #1d7484;
-  cursor: pointer;
-  box-sizing: border-box;
-}
-.button[disabled], button[disabled], input[type=submit][disabled], input[type=reset][disabled], input[type=button][disabled] {
-  cursor: default;
-  opacity: 0.5;
-}
-.button:focus:enabled, .button:hover:enabled, button:focus:enabled, button:hover:enabled, input[type=submit]:focus:enabled, input[type=submit]:hover:enabled, input[type=reset]:focus:enabled, input[type=reset]:hover:enabled, input[type=button]:focus:enabled, input[type=button]:hover:enabled {
-  background-color: #982c61;
-  border-color: #982c61;
-  color: #f9f9f9;
-  outline: 0;
-}
-
-textarea, select, input {
-  color: #4a4a4a;
-  padding: 6px 10px; /* The 6px vertically centers text on FF, ignored by Webkit */
-  margin-bottom: 10px;
-  background-color: #f1f1f1;
-  border: 1px solid #f1f1f1;
-  border-radius: 4px;
-  box-shadow: none;
-  box-sizing: border-box;
-}
-textarea:focus, select:focus, input:focus {
-  border: 1px solid #1d7484;
-  outline: 0;
-}
-
-input[type=checkbox]:focus {
-  outline: 1px dotted #1d7484;
-}
-
-label, legend, fieldset {
-  display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 600;
-}
-
-img[alt$=">"] {
-  float: right;
-  margin-top: 10px;
-  margin-left: 10px;
-}
-
-img[alt$="<"] {
-  float: left;
-  margin-top: 10px;
-  margin-right: 10px;
-}
-
-img[alt$="><"] {
-  display: block;
-  max-width: 100%;
-  height: auto;
-  margin: auto;
-  float: none!important;
-}
-
-ruby {
-  text-indent: 0;
-  white-space: nowrap;
-  line-height: 0.7em;
-}
-
-ruby rt {
-  font-size: 0.6em;
-}
-
-.logo {
-  width: 40px;
-  position: fixed;
-  color: gray;
-  height: 40px;
-  top: 20px;
-  left: 20px;
-}
-
-.lettrine {
-  float: left;
-  font-size: 5.5rem;
-  font-family: Lettrine; 
-  margin-top: 13px;
-  line-height: 0.7;
+.tags {
+	display: flex;
+	gap: 10px;
+	margin-right: auto;
 }

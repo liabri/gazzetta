@@ -3,46 +3,45 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="index.css" rel="stylesheet">
+    <link href="sakura.css" rel="stylesheet">
     <link href="article.css" rel="stylesheet">
     <title>{{title}}</title>
   </head>
   <body>
-    <div class="sidebar">
-      <a id="back" href="index.html">☚ back</a>
-      <nav class="toc">
-        <ul>
-          {{#each secs}}
-            <li>
-              <a href="#{{this}}">{{this}}</a>
-            </li>
-          {{/each}}
-        </ul>
-      </nav>
-    </div>
-    <main>
-      <div class="header">
-        <div>
-          <h1 id="t" class="title">{{title}}</h1>
+    <input type="checkbox" class="theme-switch" id="theme-switch">
+    <div id="page">
+      <label for="theme-switch" class="switch-label"></label>
+      <div class="sidebar">
+        <a id="back" href="index.html">☚ back</a>
+        <nav class="toc">
+          <ul>
+            {{#each secs}}
+              <li>
+                <a href="#{{href}}">{{value}}</a>
+              </li>
+            {{/each}}
+          </ul>
+        </nav>
+      </div>
+      <main>
+        <div class="header">
           <div>
-            <span>{{date}}</span>
-            <span>·</span>
-            <div class="tags">
-              {{#each tags}}
-                <a href="t/{{this}}.html" class="tag">#{{this}}</a>
-              {{/each}}
+            <h1 id="t" class="title">{{title}}</h1>
+            <div>
+              <span>{{date}}</span>
+              <span>·</span>
+              <div class="tags">
+                {{#each tags}}
+                  <a href="tag/{{this}}.html" class="tag">#{{this}}</a>
+                {{/each}}
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <hr />
-      {{{html}}}
-    </main>
-
-<!--     <footer>
-        <div id="rights">
-            All rights reserved. Contact: <a href="mailto:blog@example.com">blog@example.com</a>
-      </div>
-    </footer> -->
+        <hr />
+        {{{html}}}
+      </main>
+    </div>
   </body>
+  <script src="index.js" type="text/javascript"></script>
 </html>

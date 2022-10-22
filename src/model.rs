@@ -39,7 +39,7 @@ impl Articles {
     pub fn write(&mut self, templates: &Handlebars, path: &Path) -> Result<()> {
         // tags
         for tag in &self.tags {
-            let file = create_file(&path.join("t").join(tag.0).with_extension("html"), false, true)?;
+            let file = create_file(&path.join("tag").join(tag.0).with_extension("html"), false, true)?;
             let mut writer = BufWriter::new(file);
             let mut articles = tag.1.iter().map(|i| self.inner[*i].clone()).collect::<Vec<_>>();
             articles.sort_by(|p1, p2| {
@@ -86,7 +86,14 @@ pub(crate) struct Article {
     pub lang: String,
     pub path: PathBuf,
     pub html: String,
-    pub secs: Vec<String>
+    pub secs: Vec<Section>
+}
+
+#[derive(Serialize, Clone)]
+pub struct Section {
+    value: String,
+    href: String,
+    level: usize
 }
 
 use icu::calendar::{Date, Gregorian, Iso};
@@ -155,7 +162,7 @@ impl Article {
         desc.push_str("...");
 
         // add <section> around every header
-        let mut secs: Vec<String> = Vec::new();
+        let mut secs: Vec<Section> = Vec::new();
 
         //this does not respect the order in which they are. prioritises h1 above h2 etc.
         let mut headers = Vec::new();
@@ -169,9 +176,10 @@ impl Article {
         for header in headers  {
             // println!("header: {:?}", header);
             if let Some(Node::Text(v)) = header.children.first() {
-                // println!(" V: {}", v);
-                secs.push(v.to_owned());
-                let sec = Node::new_element("section", vec![("id", &v)], vec![header.children.first().unwrap().to_owned()]);
+                let href = v.to_lowercase().replace(" ", "-");
+                let sec = Node::new_element("section", vec![("id", &href)], vec![header.children.first().unwrap().to_owned()]);
+                secs.push(Section{ value: v.to_owned(), href, level: 1 });
+
                 // html = doc.remove_by(&Selector::from("h2"))
                 // .insert_to(&Selector::from("main"), sec).html();
             }

@@ -23,9 +23,10 @@ pub fn write_static(input: &Path, output: &Path) -> Result<()> {
     }
 
     for (path, content) in [
+        (output.join("sakura.css"), include_str!("../templates/sakura.css")),
         (output.join("index.css"), include_str!("../templates/index.css")),
-        (output.join("articles.css"), include_str!("../templates/articles.css")),
         (output.join("article.css"), include_str!("../templates/article.css")),
+        (output.join("index.js"), include_str!("../templates/index.js")),
     ] {
         create_dir_all(path.parent().with_context(|| format!("Could not determine parent directory of {:?}", path))?)?;
         write(&path, content).with_context(|| format!("Failed to write asset at {:?}", path))?;

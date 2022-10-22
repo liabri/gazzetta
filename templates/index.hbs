@@ -3,30 +3,35 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="sakura.css" rel="stylesheet">
     <link href="index.css" rel="stylesheet">
-    <link href="articles.css" rel="stylesheet">
     <title>Articles</title>
   </head>
   <body>
-    <main>
-      <a href="/home/liabri/dev/liabri.github.io/index.html"><img class="logo" src="/home/liabri/dev/liabri.github.io/data/icons/logo.svg"></a>
-      {{#each inner}}
-        <article>
-            <span class="key">{{date}}</span>
-            <div class="value">
-              <div>
-                <a href="{{path}}"><h3>{{title}}</h3></a>
-                <div class="tags">
-                  {{#each tags}}
-                  <a href="t/{{this}}.html" class="tag">#{{this}}</a>
-                  {{/each}}
+    <input type="checkbox" class="theme-switch" id="theme-switch">
+    <div id="page">
+      <a href="/blog/index.html"><img class="logo" src="/data/icons/logo.svg"></a>
+      <label for="theme-switch" class="switch-label"></label>
+      <main>
+        {{#each inner}}
+          <article>
+              <span class="key">{{date}}</span>
+              <div class="value">
+                <div>
+                  <a href="/blog/{{path}}"><h3>{{title}}</h3></a>
+                  <div class="tags">
+                    {{#each tags}}
+                    <a href="/blog/tag/{{this}}.html" class="tag">#{{this}}</a>
+                    {{/each}}
+                  </div>
+                  <p class="lang">{{lang}}</p>
                 </div>
-                <p class="lang">{{lang}}</p>
+                  <p class="desc">{{desc}} <a class="read_more" href=/blog/{{path}}>read more</a></p>
               </div>
-                <p class="desc">{{desc}} <a class="read_more" href={{path}}>read more</a></p>
-            </div>
-        </article>
-      {{/each}}
-    </main>
+          </article>
+        {{/each}}
+      </main>
+    </div> 
   </body>
+  <script src="index.js" type="text/javascript"></script>
 </html>
