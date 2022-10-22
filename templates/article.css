@@ -42,6 +42,30 @@
 	border-left: 2px solid tomato;
 }
 
+.toc-level-1 {
+	margin-left: 0px;
+}
+
+.toc-level-2 {
+	margin-left: 0px;
+}
+
+.toc-level-3 {
+	margin-left: 10px;
+}
+
+.toc-level-4 {
+	margin-left: 20px;
+}
+
+.toc-level-5 {
+	margin-left: 30px;
+}
+
+.toc-level-6 {
+	margin-left: 40px;
+}
+
 .toc a {
 	display: inline-block;
 	text-decoration: none;

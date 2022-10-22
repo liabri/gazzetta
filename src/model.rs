@@ -93,7 +93,7 @@ pub(crate) struct Article {
 pub struct Section {
     value: String,
     href: String,
-    level: usize
+    level: char
 }
 
 use icu::calendar::{Date, Gregorian, Iso};
@@ -161,10 +161,10 @@ impl Article {
         let mut desc = desc.trim().to_string();
         desc.push_str("...");
 
-        // add <section> around every header
+        // wrap every header and its content (until next header) in a <section>
         let mut secs: Vec<Section> = Vec::new();
 
-        //this does not respect the order in which they are. prioritises h1 above h2 etc.
+        // temp
         let mut headers = Vec::new();
         headers.append(&mut doc.query_all(&Selector::from("h1")));
         headers.append(&mut doc.query_all(&Selector::from("h2")));
@@ -173,15 +173,22 @@ impl Article {
         headers.append(&mut doc.query_all(&Selector::from("h5")));
         headers.append(&mut doc.query_all(&Selector::from("h6")));
 
-        for header in headers  {
-            // println!("header: {:?}", header);
-            if let Some(Node::Text(v)) = header.children.first() {
-                let href = v.to_lowercase().replace(" ", "-");
-                let sec = Node::new_element("section", vec![("id", &href)], vec![header.children.first().unwrap().to_owned()]);
-                secs.push(Section{ value: v.to_owned(), href, level: 1 });
+        // maybe nest sections inside sections, should make <ul> for every new level
 
+        for header in &mut headers  {
+            if let Some(Node::Text(v)) = &header.children.first() {
+                let value = v.to_owned();
+                let href = v.to_lowercase().replace(" ", "_");
+                let level = header.name.remove(1);
+                
+                header.attrs.push(("id".to_string(), href.to_string()));
                 // html = doc.remove_by(&Selector::from("h2"))
-                // .insert_to(&Selector::from("main"), sec).html();
+                // .insert_to(&Selector::from("main"), header).trim().html();
+
+                // eventually try wrap em in actual <section id="{{href}}">
+                // let sec = Node::new_element("section", vec![("id", &href)], vec![Node::Element{name: header.name, attrs: header.attrs, children: header.children }]);
+                
+                secs.push(Section{ value, href, level });
             }
         }
 
