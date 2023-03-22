@@ -18,4 +18,4 @@ icu = { version = "1.0.0", features = ["serde"] }
 icu_testdata = "1.0.0"
 minify-html-onepass = "0.10.2"
 lol_html = "0.3.1"
-html_editor = "0.5.2"
+html_editor = { git = "https://github.com/lomirus/html_editor" }

@@ -166,12 +166,7 @@ impl Article {
 
         // temp
         let mut headers = Vec::new();
-        headers.append(&mut doc.query_all(&Selector::from("h1")));
-        headers.append(&mut doc.query_all(&Selector::from("h2")));
-        headers.append(&mut doc.query_all(&Selector::from("h3")));
-        headers.append(&mut doc.query_all(&Selector::from("h4")));
-        headers.append(&mut doc.query_all(&Selector::from("h5")));
-        headers.append(&mut doc.query_all(&Selector::from("h6")));
+        headers.append(&mut doc.query_all(&Selector::from("h1, h2, h3, h4, h5, h6")));
 
         // maybe nest sections inside sections, should make <ul> for every new level
 
