@@ -6,11 +6,10 @@ no-class
 BLOCK QUOTES 		 		MARKDOWN-SPLENDOR
 SQUARE BULLET POINTS 		PICOCSS*/
 
-/* Sakura.css v1.4.1
- * ================
- * Minimal css theme.
- * Project: https://github.com/oxalorg/sakura/
- */
+@font-face {
+    font-family: AnandaBlack;
+    src: url(../data/fonts/AnandaBlack.ttf) format("truetype");
+}
 
 @font-face {
     font-family: GentiumPlus;
@@ -51,7 +50,6 @@ SQUARE BULLET POINTS 		PICOCSS*/
     src: url(../data/fonts/SourceCodePro-Italic-VariableFont.ttf) format("truetype");
     font-style: italic;
 }
-
 
 :root {
   /* Light mode */
@@ -142,10 +140,11 @@ main {
 }
 
 h1, h2, h3, h4, h5, h6 {
+  font-family: AnandaBlack;
   line-height: 1.1;
-  font-weight: 700;
+  font-weight: 500;
   margin-top: 3rem;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0.5rem;
   overflow-wrap: break-word;
   word-wrap: break-word;
   -ms-word-break: break-all;

@@ -3,6 +3,10 @@ main {
 	max-width: 50em;
 }
 
+main * {
+	z-index: 1;
+}
+
 article {
 	display: grid;
 	grid-template-columns: 1fr 4fr;
@@ -32,4 +36,41 @@ article {
 	display: flex;
 	gap: 10px;
 	margin-right: auto;
+}
+
+#logo {
+	display: inline;
+}
+
+.bg {
+	position: absolute;
+	z-index: 0;
+}
+
+#bg1 {
+	width: 30vw;
+	opacity: 0.1;
+	top: 25%;
+	left: 60%;
+}
+
+#bg2 {
+	width: 30vw;
+	opacity: 0.2;
+	top: 7%;
+	left: 13%;
+}
+
+#bg3 {
+	width: 30vw;
+	opacity: 0.1;
+	top: 70%;
+	left: 25%;
+}
+
+#bg4 {
+	width: 30vw;
+	opacity: 0.1;
+	top: 150%;
+	left: 8%;
 }

@@ -72,11 +72,6 @@
 	color: var(--text-color);
 }
 
-.toc a:hover,
-.toc a:focus {
-	color: tomato;
-}
-
 main {
 	border-style: solid;
 	border: 1px;
@@ -87,6 +82,7 @@ main {
 
 h1 {
 	margin: 0;
+	font-family: AnandaBlack;
 }
 
 .header div {
