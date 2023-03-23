@@ -57,8 +57,8 @@ SQUARE BULLET POINTS 		PICOCSS*/
   /* Light mode */
   --light-switch-shadow: #373d4e;
   --light-switch-icon: "月";
-  --light-text: #4a4a4a;
-  --light-bg: #f6f6f2;
+  --light-text: #353535;
+  --light-bg: #f7f7f4;
   --light-theme: #d34a97;
 
   /* Dark mode */
@@ -191,14 +191,22 @@ hr {
 }
 
 a {
+  display: inline-block;
+  vertical-align: middle;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
   text-decoration: none;
-  color: #1d7484;
+  color: var(--light-text);
 }
-a:visited {
-  color: #144f5a;
-}
-a:hover {
-  color: #982c61;
+
+a:hover, a:focus, a:active {
+  -webkit-transform: scale(1.1) rotate(4deg);
+  transform: scale(1.1) rotate(4deg);
 }
 
 ul {
@@ -226,7 +234,7 @@ blockquote {
   padding-top: 0.8em;
   padding-bottom: 0.8em;
   padding-right: 0.8em;
-  border-left: 5px solid #1d7484;
+  border-left: 5px solid var(--light-text);
   margin-bottom: 2.5rem;
   background-color: #f1f1f1;
 }
