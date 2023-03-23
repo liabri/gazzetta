@@ -166,26 +166,30 @@ impl Article {
 
         // temp
         let mut headers = Vec::new();
-        headers.append(&mut doc.query_all(&Selector::from("h1, h2, h3, h4, h5, h6")));
+        headers.append(&mut doc.query_all(&Selector::from("h2, h3, h4, h5, h6")));
 
         // maybe nest sections inside sections, should make <ul> for every new level
-
         for header in &mut headers  {
             if let Some(Node::Text(v)) = &header.children.first() {
                 let value = v.to_owned();
                 let href = v.to_lowercase().replace(" ", "_");
                 let level = header.name.remove(1);
-                
-                header.attrs.push(("id".to_string(), href.to_string()));
-                // html = doc.remove_by(&Selector::from("h2"))
-                // .insert_to(&Selector::from("main"), header).trim().html();
 
-                // eventually try wrap em in actual <section id="{{href}}">
-                // let sec = Node::new_element("section", vec![("id", &href)], vec![Node::Element{name: header.name, attrs: header.attrs, children: header.children }]);
-                
-                secs.push(Section{ value, href, level });
+                // for now just add a section above the header
+                let sec = Node::new_element("section", vec![("id", &href)], vec![/*Node::Element{name: header.name.clone(), attrs: header.attrs.clone(), children: header.children.clone() }*/]);     
+                for (i, node) in doc.clone().into_iter().enumerate() {
+                    if i>0 {
+                        if node.html().contains(&value) {
+                            doc.insert(i-1, sec.clone());
+                        }
+                    }
+                }
+
+                let section = Section{ value, href, level };
+                secs.push(section);
             }
         }
+
 
         Ok(Self {
             title,
@@ -194,7 +198,7 @@ impl Article {
             tags,
             lang,
             path: path.strip_prefix(input)?.to_path_buf().with_extension("html"),
-            html,
+            html: doc.html(),
             secs
         })
     }
