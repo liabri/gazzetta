@@ -1,3 +1,7 @@
+* {
+	background-image: linear-gradient(to right, rgba(255,255,255, 0.97) 0 100%), url('data/universal/artdeco.svg');
+}
+
 main {
   	padding: 13px 0 13px 0;
 	max-width: 50em;
@@ -40,37 +44,4 @@ article {
 
 #logo {
 	display: inline;
-}
-
-.bg {
-	position: absolute;
-	z-index: 0;
-}
-
-#bg1 {
-	width: 30vw;
-	opacity: 0.1;
-	top: 25%;
-	left: 60%;
-}
-
-#bg2 {
-	width: 30vw;
-	opacity: 0.2;
-	top: 7%;
-	left: 13%;
-}
-
-#bg3 {
-	width: 30vw;
-	opacity: 0.1;
-	top: 70%;
-	left: 25%;
-}
-
-#bg4 {
-	width: 30vw;
-	opacity: 0.1;
-	top: 150%;
-	left: 8%;
 }

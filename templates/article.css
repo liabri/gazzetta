@@ -1,9 +1,10 @@
 * {
 	scroll-behavior: smooth;
+	background-image: linear-gradient(to right, rgba(255,255,255, 0.97) 0 100%), url('data/universal/artdeco.svg');
 }
 
 #page {
-	padding: 3em 20vw 3em 4vw;
+	padding: 3em 15vw 3em 4vw;
 	display: flex;
 	gap: 40px;
 }
@@ -77,12 +78,19 @@ main {
 	border: 1px;
 	border-spacing: 0px;
 	border-color: #f2f2f2;
-	width: 100vw;
+	width: 120vw;
 }
 
 h1 {
 	margin: 0;
-	font-family: AnandaBlack;
+	font-family: BackstagePassNf;
+	font-size: 4em;
+}
+
+h1:hover {
+	text-shadow: 0.4px 0.4px 0 #0e0e0e, -0.4px -0.4px 0 #0e0e0e, -0.4px -0.4px 0 #0e0e0e, -0.4px 0.4px 0 #0e0e0e, 0.4px -0.4px 0 #0e0e0e;
+	transition: all 100ms ease-in-out;
+	transform: translate(-1px, -1px);
 }
 
 .header div {
