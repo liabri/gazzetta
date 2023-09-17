@@ -109,7 +109,7 @@ pub fn extract_all_text(output: &mut String, el: Element) {
     for child in el.children {
         match child {
             Node::Text(s) => output.push_str(&s),
-            Node::Element{name, attrs, children} => extract_all_text(output, Element{name, attrs, children}),
+            Node::Element(e) => extract_all_text(output, Element{name:e.name, attrs:e.attrs, children:e.children}),
             _ => ()
         }
     }
@@ -156,7 +156,7 @@ impl Article {
 
         // description
         let mut desc = String::new();
-        extract_all_text(&mut desc, doc.query(&Selector::from("p")).unwrap());
+        extract_all_text(&mut desc, doc.query(&Selector::from("p")).unwrap().clone());
         desc.truncate(300);
         let mut desc = desc.trim().to_string();
         desc.push_str("...");
@@ -169,26 +169,26 @@ impl Article {
         headers.append(&mut doc.query_all(&Selector::from("h2, h3, h4, h5, h6")));
 
         // maybe nest sections inside sections, should make <ul> for every new level
-        for header in &mut headers  {
-            if let Some(Node::Text(v)) = &header.children.first() {
-                let value = v.to_owned();
-                let href = v.to_lowercase().replace(" ", "_");
-                let level = header.name.remove(1);
+        // for header in headers  {
+        //     if let Some(Node::Text(v)) = &header.children.first() {
+        //         let value = v.to_owned();
+        //         let href = v.to_lowercase().replace(" ", "_");
+        //         let level = header.name.clone().remove(1);
 
-                // for now just add a section above the header
-                let sec = Node::new_element("section", vec![("id", &href)], vec![/*Node::Element{name: header.name.clone(), attrs: header.attrs.clone(), children: header.children.clone() }*/]);     
-                for (i, node) in doc.clone().into_iter().enumerate() {
-                    if i>0 {
-                        if node.html().contains(&value) {
-                            doc.insert(i-1, sec.clone());
-                        }
-                    }
-                }
+        //         // for now just add a section above the header
+        //         let sec = Node::new_element("section", vec![("id", &href)], vec![/*Node::Element{name: header.name.clone(), attrs: header.attrs.clone(), children: header.children.clone() }*/]);     
+        //         for (i, node) in doc.clone().into_iter().enumerate() {
+        //             if i>0 {
+        //                 if node.html().contains(&value) {
+        //                     doc.insert(i-1, sec.clone());
+        //                 }
+        //             }
+        //         }
 
-                let section = Section{ value, href, level };
-                secs.push(section);
-            }
-        }
+        //         let section = Section{ value, href, level };
+        //         secs.push(section);
+        //     }
+        // }
 
 
         Ok(Self {

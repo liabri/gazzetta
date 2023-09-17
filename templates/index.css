@@ -1,14 +1,12 @@
-* {
-	background-image: linear-gradient(to right, rgba(255,255,255, 0.97) 0 100%), url('data/universal/artdeco.svg');
+#page {
+	padding: 150px 0 200px 0;
+    background: url('data/universal/index_top.png') top no-repeat, url('data/universal/index_bottom.png') bottom left no-repeat, url('data/universal/index_middle.png') repeat-y;
+	background-size: 100%;
 }
 
 main {
   	padding: 13px 0 13px 0;
 	max-width: 50em;
-}
-
-main * {
-	z-index: 1;
 }
 
 article {
@@ -44,4 +42,31 @@ article {
 
 #logo {
 	display: inline;
+}
+
+.title {
+	font-family: MetriaStreet;
+	font-size: 3em;
+  	line-height: 0.8;
+  	margin-top: 3rem;
+  	margin-bottom: 0.5rem;
+   	padding: 5px;
+	background:
+		conic-gradient(            #fff 0 90deg, #fff0 0) bottom left,
+		conic-gradient(            #000 0 90deg, #fff0 0) bottom left,
+		conic-gradient(from  90deg,#fff 0 90deg, #fff0 0) top left,
+		conic-gradient(from  90deg,#000 0 90deg, #fff0 0) top left,
+		conic-gradient(from 180deg,#fff 0 90deg, #fff0 0) top right,
+		conic-gradient(from 180deg,#000 0 90deg, #fff0 0) top right,
+		conic-gradient(from -90deg,#fff 0 90deg, #fff0 0) bottom right,
+		conic-gradient(from -90deg,#000 0 90deg, #fff0 0) bottom right,
+		#000;
+	-webkit-background-clip:text,padding-box;
+	background-clip:text,padding-box;
+	background-size: 202% 202%;
+	transition: 0.5s;
+}
+
+.title:hover {  
+	background-position: center;
 }

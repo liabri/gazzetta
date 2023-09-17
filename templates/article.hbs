@@ -8,12 +8,24 @@
     <title>{{title}}</title>
   </head>
   <body>
+    <a id="back" href="index.html"><img src="../data/icons/back.svg" alt="" id="logo"></a>
     <input type="checkbox" class="theme-switch" id="theme-switch">
     <div id="page">
       <label for="theme-switch" class="switch-label"></label>
       <div class="sidebar">
-        <h1 class="title">{{title}}</h1>
-        <a id="back" href="index.html">☚ back</a>
+        <div class="header">
+          <div>
+            <div class="line"></div>
+            <span class="date">{{date}}</span>
+          </div>
+          <h1 class="title">{{title}}</h1>
+        </div>
+        <span class="divider">F</span>
+        <div class="tags">
+          {{#each tags}}
+            <a href="tag/{{this}}.html" class="tag">#{{this}}</a>
+          {{/each}}        
+        </div>
         <nav class="toc">
           <ul>
             {{#each secs}}
@@ -25,20 +37,6 @@
         </nav>
       </div>
       <main>
-        <div class="header">
-          <div>
-            <div>
-              <span>{{date}}</span>
-              <span>·</span>
-              <div class="tags">
-                {{#each tags}}
-                  <a href="tag/{{this}}.html" class="tag">#{{this}}</a>
-                {{/each}}
-              </div>
-            </div>
-          </div>
-        </div>
-        <hr />
         {{{html}}}
       </main>
     </div>
